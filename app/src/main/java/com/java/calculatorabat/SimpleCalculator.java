@@ -186,7 +186,12 @@ public class SimpleCalculator extends AppCompatActivity {
         buttonEqual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                computeValues();
+                if (!(inputValue.getText().toString().isEmpty()) && inputValue.getText().toString() != null) {
+                    computeValues();
+                } else {
+                    inputValue.setText("");
+                }
+
             }
         });
 
@@ -201,6 +206,9 @@ public class SimpleCalculator extends AppCompatActivity {
 
                     if(str.charAt(length - 1) == '.') {
                         inputValue.setText(inputValue.getText().subSequence(0, inputValue.getText().length() - 1));
+                        if (str.charAt(length) <= 0) {
+                            inputValue.setText("0.0");
+                        }
                     } else {
                         inputValue.setText(inputValue.getText().subSequence(0, inputValue.getText().length() - 1));
                     }
@@ -211,22 +219,24 @@ public class SimpleCalculator extends AppCompatActivity {
         buttonErase.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                inputOne = null;
-                inputTwo = null;
-                valueOne = null;
-                valueTwo = null;
-                inputValue.setText(null);
+                eraseValues();
             }
         });
 
 
     }
 
+
     public void computeValues() {
-        if(inputValue.getText().equals("")) { // Treat as no value or null
+        //Log.d(TAG, "Compute Values | Input Value: " + inputValue.getText().toString());
+
+        if(inputValue.getText().toString().isEmpty()) { // Treat as no value or null
             inputValue.setText("");
+            Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
+            eraseValues();
             debugValues();
-        } else {
+
+        }  else {
             valueTwo = inputValue.getText().toString();
             inputOne = Double.parseDouble(valueOne);
             inputTwo = Double.parseDouble(valueTwo);
@@ -246,17 +256,23 @@ public class SimpleCalculator extends AppCompatActivity {
                 inputValue.setText(inputResult + "");
             } else {
                 Toast.makeText(this, "Something happened.", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Compute Values | Input Value ELSE: " + inputValue.toString());
                 debugValues();
             }
-        } try {
-            inputOne = null;
-            inputTwo = null;
-        } catch (Exception e) {
-            Log.e(TAG, "Error: " + e.getMessage());
         }
     }
 
+    private void eraseValues() {
+        inputOne = null;
+        inputTwo = null;
+        valueOne = null;
+        valueTwo = null;
+        inputValue.setText("");
+    }
+
     public void debugValues() {
+        Log.d(TAG, "------------------");
+        Log.d(TAG, "from debugValues()");
         Log.d(TAG, "Value One: " + valueOne);
         Log.d(TAG, "Value Two: " + valueTwo);
         Log.d(TAG, "Input One: " + inputOne);

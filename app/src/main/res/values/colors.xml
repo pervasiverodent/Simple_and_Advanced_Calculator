@@ -3,5 +3,12 @@
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
     <color name="colorAccent">#03DAC5</color>
-    <color name="colroBlack">#121212</color>
+    <color name="colorCyanDark">#00554D</color>
+    <color name="colorCyanDarker">#00322D</color>
+    <color name="colorBlack">#121212</color>
+    <color name="colorLightGrey">#7E7E7E</color>
+    <color name="colorGrey">#393939</color>
+    <color name="colorDarkGrey">#2B2B2B</color>
+    <color name="colorWhite">#FAFAFA</color>
+
 </resources>
