@@ -4,12 +4,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import java.text.DecimalFormat;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import javax.security.auth.callback.Callback;
 
 public class SimpleCalculator extends AppCompatActivity {
 
@@ -19,10 +25,10 @@ public class SimpleCalculator extends AppCompatActivity {
     Button buttonSeven, buttonEight, buttonNine, buttonAddition; //First row
     Button buttonFour, buttonFive, buttonSix, buttonMinus; //Second row
     Button buttonOne, buttonTwo, buttonThree, buttonMultiplication; //Third Row
-    Button buttonModulo, buttonZero, buttonEqual, buttonDivision; //Fourth Row
+    Button buttonDot, buttonZero, buttonEqual, buttonDivision; //Fourth Row
     Button buttonDelete, buttonErase; //Fifth Row
 
-    private boolean isAddition, isSubtraction, isMultiplication, isDivision, isModulo = false;
+    private boolean isAddition, isSubtraction, isMultiplication, isDivision = false;
 
     private String valueOne, valueTwo;
 
@@ -56,7 +62,7 @@ public class SimpleCalculator extends AppCompatActivity {
         buttonThree = findViewById(R.id.button_3);
         buttonMultiplication = findViewById(R.id.button_multiply);
 
-        buttonModulo = findViewById(R.id.button_modulo);
+        buttonDot = findViewById(R.id.button_dot);
         buttonZero = findViewById(R.id.button_0);
         buttonEqual = findViewById(R.id.button_equals);
         buttonDivision = findViewById(R.id.button_divide);
@@ -195,6 +201,18 @@ public class SimpleCalculator extends AppCompatActivity {
             }
         });
 
+        buttonDot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int length = inputValue.getText().toString().length();
+                if(length != 0) {
+                    inputValue.setText((inputValue.getText().toString()) + ".");
+                } else {
+                    inputValue.setText(0 + "." + "");
+                }
+            }
+        });
+
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -202,15 +220,11 @@ public class SimpleCalculator extends AppCompatActivity {
                     inputValue.setText("");
                 } else {
                     int length = inputValue.getText().length();
-                    String str = inputValue.getText().toString();
 
-                    if(str.charAt(length - 1) == '.') {
-                        inputValue.setText(inputValue.getText().subSequence(0, inputValue.getText().length() - 1));
-                        if (str.charAt(length) <= 0) {
-                            inputValue.setText("0.0");
-                        }
+                    if(length != 0) {
+                        inputValue.setText(inputValue.getText().subSequence(0, length - 1));
                     } else {
-                        inputValue.setText(inputValue.getText().subSequence(0, inputValue.getText().length() - 1));
+                        inputValue.setText("");
                     }
                 }
             }
@@ -223,20 +237,17 @@ public class SimpleCalculator extends AppCompatActivity {
             }
         });
 
-
+        inputValue.setLongClickable(false); // This is to prevent on click and copy/paste within input box.
+        inputValue.setTextIsSelectable(false);
     }
 
 
     public void computeValues() {
-        //Log.d(TAG, "Compute Values | Input Value: " + inputValue.getText().toString());
-
         if(inputValue.getText().toString().isEmpty()) { // Treat as no value or null
             inputValue.setText("");
-            Toast.makeText(this, "Invalid Input", Toast.LENGTH_SHORT).show();
-            eraseValues();
-            debugValues();
-
         }  else {
+            inputResult = 0.0;
+
             valueTwo = inputValue.getText().toString();
             inputOne = Double.parseDouble(valueOne);
             inputTwo = Double.parseDouble(valueTwo);

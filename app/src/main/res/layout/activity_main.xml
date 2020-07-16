@@ -6,19 +6,35 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity"
     android:orientation="vertical"
-    android:layout_margin="32dp">
+    android:layout_margin="16dp">
 
     <Button
         android:id="@+id/simple_calculator_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
         android:text="Simple Calculator"
+        android:layout_marginTop="64dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/colorBlack"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:ems="10"
         android:layout_gravity="center"/>
 
     <Button
         android:id="@+id/advanced_calculator_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="200dp"
+        android:background="@color/colorBlack"
+        android:textColor="@color/colorWhite"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:paddingLeft="32dp"
+        android:paddingRight="32dp"
+        android:ems="10"
         android:text="Advanced Calculator"
         android:layout_gravity="center"/>
 
