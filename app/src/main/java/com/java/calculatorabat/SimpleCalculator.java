@@ -1,21 +1,12 @@
 package com.java.calculatorabat;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import java.text.DecimalFormat;
-
-import android.app.ActionBar;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.ActionMode;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import javax.security.auth.callback.Callback;
 
 public class SimpleCalculator extends AppCompatActivity {
 
@@ -29,6 +20,7 @@ public class SimpleCalculator extends AppCompatActivity {
     Button buttonDelete, buttonErase; //Fifth Row
 
     private boolean isAddition, isSubtraction, isMultiplication, isDivision = false;
+    private boolean hasDot = false;
 
     private String valueOne, valueTwo;
 
@@ -136,6 +128,13 @@ public class SimpleCalculator extends AppCompatActivity {
             }
         });
 
+        buttonZero.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                inputValue.setText(inputValue.getText() + "0");
+            }
+        });
+
         buttonAddition.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -146,6 +145,8 @@ public class SimpleCalculator extends AppCompatActivity {
                 isSubtraction = false;
                 isMultiplication = false;
                 isDivision = false;
+
+                hasDot = false;
 
             }
         });
@@ -160,6 +161,8 @@ public class SimpleCalculator extends AppCompatActivity {
                 isSubtraction = true;
                 isMultiplication = false;
                 isDivision = false;
+
+                hasDot = false;
             }
         });
 
@@ -173,6 +176,8 @@ public class SimpleCalculator extends AppCompatActivity {
                 isSubtraction = false;
                 isMultiplication = true;
                 isDivision = false;
+
+                hasDot = false;
             }
         });
 
@@ -186,6 +191,8 @@ public class SimpleCalculator extends AppCompatActivity {
                 isSubtraction = false;
                 isMultiplication = false;
                 isDivision = true;
+
+                hasDot = false;
             }
         });
 
@@ -204,12 +211,17 @@ public class SimpleCalculator extends AppCompatActivity {
         buttonDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                int length = inputValue.getText().toString().length();
-                if(length != 0) {
-                    inputValue.setText((inputValue.getText().toString()) + ".");
-                } else {
-                    inputValue.setText(0 + "." + "");
+                if(!hasDot) {
+                    int length = inputValue.getText().toString().length();
+                    if(length != 0) {
+                        inputValue.setText((inputValue.getText().toString()) + ".");
+                    } else {
+                        inputValue.setText(0 + "." + "");
+                    }
+
+                    hasDot = true;
                 }
+
             }
         });
 
@@ -221,7 +233,8 @@ public class SimpleCalculator extends AppCompatActivity {
                 } else {
                     int length = inputValue.getText().length();
 
-                    if(length != 0) {
+                    if(inputValue.getText().toString().charAt(length - 1) == '.') {
+                        hasDot = false;
                         inputValue.setText(inputValue.getText().subSequence(0, length - 1));
                     } else {
                         inputValue.setText("");
@@ -254,15 +267,19 @@ public class SimpleCalculator extends AppCompatActivity {
             inputValue.setText(null);
 
             if (isAddition) {
+                hasDot = false;
                 inputResult = (inputOne + inputTwo);
                 inputValue.setText(inputResult + "");
             } else if (isSubtraction) {
+                hasDot = false;
                 inputResult = (inputOne - inputTwo);
                 inputValue.setText(inputResult + "");
             } else if (isMultiplication) {
+                hasDot = false;
                 inputResult = (inputOne * inputTwo);
                 inputValue.setText(inputResult + "");
             } else if (isDivision) {
+                hasDot = false;
                 inputResult = (inputOne / inputTwo);
                 inputValue.setText(inputResult + "");
             } else {
@@ -278,6 +295,7 @@ public class SimpleCalculator extends AppCompatActivity {
         inputTwo = null;
         valueOne = null;
         valueTwo = null;
+        hasDot = false;
         inputValue.setText("");
     }
 
