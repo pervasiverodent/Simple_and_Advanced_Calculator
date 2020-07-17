@@ -2,3 +2,6 @@
 For CSE11
 
 This project is on-going.
+
+
+[Home](calc.PNG)
