@@ -1,6 +1,7 @@
 package com.java.calculatorabat;
 
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,12 +24,9 @@ public class AdvancedCalculator extends AppCompatActivity {
     Button buttonDot, buttonZero, buttonEqual, buttonComma; //Fourth Row
     Button buttonDelete, buttonErase; //Fifth Row
 
-    private boolean isMode, isMean, isMedian = false;
     private boolean hasDot, hasComma = false;
 
-    private String valueOne, valueTwo, textValue;
-
-    private Double inputOne, inputTwo, inputResult;
+    private String valueOne;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +70,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "1");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -79,6 +80,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "2");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -86,6 +90,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "3");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -93,6 +100,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "4");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -100,6 +110,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "5");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -107,6 +120,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "6");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -114,6 +130,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "7");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -121,6 +140,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "8");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -128,6 +150,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "9");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -135,6 +160,9 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 inputValue.setText(inputValue.getText() + "0");
+
+                hasComma = false;
+                hasDot = false;
             }
         });
 
@@ -142,11 +170,6 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 valueOne = inputValue.getText().toString();
-                inputValue.setText(null);
-
-                isMode = true;
-                isMean = false;
-                isMedian = false;
 
                 hasDot = false;
                 hasComma = false;
@@ -159,14 +182,11 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 valueOne = inputValue.getText().toString();
-                inputValue.setText(null);
-
-                isMode = false;
-                isMean = true;
-                isMedian = false;
 
                 hasDot = false;
                 hasComma = false;
+
+                computeMean();
             }
         });
 
@@ -174,28 +194,26 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 valueOne = inputValue.getText().toString();
-                inputValue.setText(null);
-
-                isMode = false;
-                isMean = false;
-                isMedian = true;
 
                 hasDot = false;
                 hasComma = false;
+
+                computeMedian();
             }
         });
 
         buttonComma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!hasComma) {
+                if (!hasComma) {
                     int length = inputValue.getText().toString().length();
-                    if(length != 0) {
+                    if (length != 0) {
                         inputValue.setText((inputValue.getText().toString()) + "," + "");
                     } else {
                         inputValue.setText(0 + "," + "");
                     }
-                    //hasComma = true;
+                    hasComma = true;
+                    hasDot = false;
                 }
             }
         });
@@ -204,7 +222,7 @@ public class AdvancedCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (!(inputValue.getText().toString().isEmpty()) && inputValue.getText().toString() != null) {
-                    computeValues();
+                    inputValue.setText("");
                 } else {
                     inputValue.setText("");
                 }
@@ -215,9 +233,9 @@ public class AdvancedCalculator extends AppCompatActivity {
         buttonDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(!hasDot) {
+                if (!hasDot) {
                     int length = inputValue.getText().toString().length();
-                    if(length != 0) {
+                    if (length != 0) {
                         inputValue.setText((inputValue.getText().toString()) + "." + "");
                     } else {
                         inputValue.setText(0 + "." + "");
@@ -229,16 +247,15 @@ public class AdvancedCalculator extends AppCompatActivity {
         });
 
 
-
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(inputValue.getText().equals("")) {
+                if (inputValue.getText().equals("")) {
                     inputValue.setText("");
                 } else {
                     int length = inputValue.getText().length();
 
-                    if(inputValue.getText().toString().charAt(length - 1) == '.') {
+                    if (inputValue.getText().toString().charAt(length - 1) == '.') {
                         hasDot = false;
                         hasComma = false;
                         inputValue.setText(inputValue.getText().subSequence(0, length - 1));
@@ -260,98 +277,137 @@ public class AdvancedCalculator extends AppCompatActivity {
         inputValue.setTextIsSelectable(false);
     }
 
+    private void computeMode() {
+        final String TAG = "computeMode()";
 
+        valueOne = inputValue.getText().toString();
+        Log.d(TAG, "valueOne: " + valueOne);
 
-    public int mode() {
-        int value = Integer.parseInt(inputValue.getText().toString());
-        int[] sequence = new int[value];
+        if (valueOne != null) {
 
-        int maxValue = 0;
-        int maxCount = 0;
+            String[] valueArray = valueOne.split(",");
 
-        for(int i = 1; i < sequence.length; ++i) {
-            int count = 0;
-            for (int j = 0; j < sequence.length; ++j) {
-                if(sequence[j] == sequence[i]) {
-                    ++count;
-                }
+            List<String> fixedList = Arrays.asList(valueArray);
+            ArrayList<String> listOfNumbers = new ArrayList<String>(fixedList);
+            int size = listOfNumbers.size();
+
+            ArrayList<Integer> result = new ArrayList<Integer>();
+            for (String valueString : valueArray) {
+                result.add(Integer.parseInt(String.valueOf(valueString)));
             }
+
+            inputValue.setText(mode(result, size));
+        } else {
+            Log.d(TAG, "Else valueOne: " + valueOne);
+        }
+    }
+
+
+    public int mode(ArrayList<Integer> result, int size) {
+
+        int maxValue = 0, maxCount = 0, i, j;
+
+        for (i = 0; i < size; ++i) {
+            int count = 0;
+            for (j = 0; j < size; ++j) {
+                if (result.get(j) == result.get(i))
+                    ++count;
+            }
+
             if (count > maxCount) {
                 maxCount = count;
-                maxValue = sequence[i];
+                maxValue = result.get(i);
             }
         }
-
         return maxValue;
     }
 
-    public void computeValues() {
+    private void computeMean() {
+        final String TAG = "computeMean()";
 
-        if(inputValue.getText().toString().isEmpty()) { // Treat as no value or null
-            inputValue.setText("" + mode());
-        } else {
-            inputResult = 0.0;
+        valueOne = inputValue.getText().toString();
+        Log.d(TAG, "valueOne: " + valueOne);
 
-            valueTwo = inputValue.getText().toString();
-            inputOne = Double.parseDouble(valueOne);
-            inputTwo = Double.parseDouble(valueTwo);
-            inputValue.setText(null);
+        if (valueOne != null) {
+            String[] valueArrayString = valueOne.split(",");
+            double[] arrayDouble = new double[valueArrayString.length];
 
-            if (isMode) {
-                computeMode();
-            } else if (isMean) {
-                //computeMean();
-            } else if (isMedian) {
-                //computeMedian();
-            } else {
-//                Toast.makeText(this, "Something happened.", Toast.LENGTH_SHORT).show();
-//                Log.d(TAG, "Compute Values | Input Value ELSE: " + inputValue.toString());
-//                debugValues();
+            for (int i = 0; i < valueArrayString.length; i++) {
+                arrayDouble[i] = Double.valueOf(valueArrayString[i]);
             }
+
+            Log.d(TAG, "Length: " + arrayDouble.length);
+            int size = arrayDouble.length;
+
+            inputValue.setText(mean(arrayDouble, size).toString());
+
+        } else {
+            Log.d(TAG, "Else valueOne: " + valueOne);
         }
     }
 
-    private void computeMode() {
-        valueOne = inputValue.getText().toString();
-        String[] valueArray = textValue.split(",");
+    public Double mean(double[] result, int size) {
+        double sum = 0;
+        double output = 0;
 
-        List<String> fixedList = Arrays.asList(valueArray);
-        ArrayList<String> listOfNumbers = new ArrayList<String>(fixedList);
+        for (int index = 0; index < size; index++) {
+            sum += result[index];
+        }
+        output = (sum / result.length);
 
-        Log.d(TAG, "List: " + listOfNumbers);
-        System.out.println("List: " + textValue);
-        System.out.println("List: " + listOfNumbers);
-        System.out.println("List: " + listOfNumbers.size());
-
-    }
-
-    private void computeMean() {
-
+        return output;
     }
 
     private void computeMedian() {
+        final String TAG = "computeMedian()";
+
+        valueOne = inputValue.getText().toString();
+        Log.d(TAG, "valueOne: " + valueOne);
+
+        if (valueOne != null) {
+
+
+            String[] valueArrayString = valueOne.split(",");
+            double[] arrayDouble = new double[valueArrayString.length];
+
+            // Convert String to Double
+            for (int i = 0; i < valueArrayString.length; i++) {
+                arrayDouble[i] = Double.valueOf(valueArrayString[i]);
+            }
+
+            // Sort
+            Arrays.sort(arrayDouble);
+
+            for (Double sortedDouble : arrayDouble) {
+                Log.d(TAG, String.valueOf(sortedDouble));
+            }
+
+
+            Log.d(TAG, "Length: " + arrayDouble.length);
+
+            inputValue.setText(median(arrayDouble).toString());
+
+        } else {
+            Log.d(TAG, "Else valueOne: " + valueOne);
+        }
 
     }
 
+    public Double median(double[] m) {
 
+        int middle = m.length / 2;
+        if (m.length % 2 == 1) {
+            return m[middle];
+        } else {
+            return (m[middle - 1] + m[middle]) / 2.0;
+        }
+    }
 
     private void eraseValues() {
-        inputOne = null;
-        inputTwo = null;
         valueOne = null;
-        valueTwo = null;
         hasDot = false;
         hasComma = false;
         inputValue.setText("");
-    }
-
-    public void debugValues() {
-        Log.d(TAG, "------------------");
-        Log.d(TAG, "from debugValues()");
-        Log.d(TAG, "Value One: " + valueOne);
-        Log.d(TAG, "Value Two: " + valueTwo);
-        Log.d(TAG, "Input One: " + inputOne);
-        Log.d(TAG, "Input Two: " + inputTwo);
     }
 
 
