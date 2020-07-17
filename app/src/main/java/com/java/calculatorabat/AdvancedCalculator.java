@@ -288,7 +288,7 @@ public class AdvancedCalculator extends AppCompatActivity {
                 result.add(Integer.parseInt(String.valueOf(valueString)));
             }
 
-            inputValue.setText(mode(result, size));
+            inputValue.setText("" + mode(result, size));
         } else {
             Log.d(TAG, "Else valueOne: " + valueOne);
         }
@@ -304,6 +304,11 @@ public class AdvancedCalculator extends AppCompatActivity {
             for (j = 0; j < size; ++j) {
                 if (result.get(j) == result.get(i))
                     ++count;
+            }
+
+            if (count > maxCount) {
+                maxCount = count;
+                maxValue = result.get(i);
             }
         }
         return maxValue;
