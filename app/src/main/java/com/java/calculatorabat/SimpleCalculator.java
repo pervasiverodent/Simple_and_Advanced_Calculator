@@ -24,7 +24,8 @@ public class SimpleCalculator extends AppCompatActivity {
 
     private String valueOne, valueTwo;
 
-    private Double inputOne, inputTwo, inputResult;
+    private Double inputOne, inputTwo = 0.0;
+    private Double inputResult;
 
 
     @Override
@@ -155,7 +156,7 @@ public class SimpleCalculator extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 valueOne = inputValue.getText().toString();
-                inputValue.setText(null);
+                inputValue.setText("-");
 
                 isAddition = false;
                 isSubtraction = true;
@@ -232,11 +233,17 @@ public class SimpleCalculator extends AppCompatActivity {
                     inputValue.setText("");
                 } else {
                     int length = inputValue.getText().length();
-
-                    if(inputValue.getText().toString().charAt(length - 1) == '.') {
-                        hasDot = false;
-                        inputValue.setText(inputValue.getText().subSequence(0, length - 1));
-                    } else {
+                    try {
+                        if(inputValue.getText().toString().charAt(length - 1) == '.') {
+                            inputValue.setText(inputValue.getText().subSequence(0, length - 1));
+                        } else {
+                            inputValue.setText(inputValue.getText().subSequence(0, length - 1));
+                        }
+                    } catch (StringIndexOutOfBoundsException e) {
+                        Log.e(TAG, e.getMessage());
+                        inputValue.setText("");
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.d(TAG, e.getMessage());
                         inputValue.setText("");
                     }
                 }
@@ -256,7 +263,7 @@ public class SimpleCalculator extends AppCompatActivity {
 
 
     public void computeValues() {
-        if(inputValue.getText().toString().isEmpty()) { // Treat as no value or null
+        if(inputValue.getText().toString().isEmpty() || inputValue.getText().toString() == "") { // Treat as no value or null
             inputValue.setText("");
         }  else {
             inputResult = 0.0;

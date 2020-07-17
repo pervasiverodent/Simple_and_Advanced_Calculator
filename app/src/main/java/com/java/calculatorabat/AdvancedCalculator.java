@@ -21,7 +21,7 @@ public class AdvancedCalculator extends AppCompatActivity {
     Button buttonSeven, buttonEight, buttonNine, buttonMode; //First row
     Button buttonFour, buttonFive, buttonSix, buttonMean; //Second row
     Button buttonOne, buttonTwo, buttonThree, buttonMedian; //Third Row
-    Button buttonDot, buttonZero, buttonEqual, buttonComma; //Fourth Row
+    Button buttonDot, buttonZero, buttonComma; //Fourth Row
     Button buttonDelete, buttonErase; //Fifth Row
 
     private boolean hasDot, hasComma = false;
@@ -57,7 +57,6 @@ public class AdvancedCalculator extends AppCompatActivity {
 
         buttonDot = findViewById(R.id.button_dot);
         buttonZero = findViewById(R.id.button_0);
-        buttonEqual = findViewById(R.id.button_equals);
         buttonComma = findViewById(R.id.button_comma);
 
         buttonDelete = findViewById(R.id.button_delete);
@@ -218,18 +217,6 @@ public class AdvancedCalculator extends AppCompatActivity {
             }
         });
 
-        buttonEqual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (!(inputValue.getText().toString().isEmpty()) && inputValue.getText().toString() != null) {
-                    inputValue.setText("");
-                } else {
-                    inputValue.setText("");
-                }
-
-            }
-        });
-
         buttonDot.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -250,16 +237,21 @@ public class AdvancedCalculator extends AppCompatActivity {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (inputValue.getText().equals("")) {
+                if(inputValue.getText().equals("")) {
                     inputValue.setText("");
                 } else {
                     int length = inputValue.getText().length();
-
-                    if (inputValue.getText().toString().charAt(length - 1) == '.') {
-                        hasDot = false;
-                        hasComma = false;
-                        inputValue.setText(inputValue.getText().subSequence(0, length - 1));
-                    } else {
+                    try {
+                        if(inputValue.getText().toString().charAt(length - 1) == '.') {
+                            inputValue.setText(inputValue.getText().subSequence(0, length - 1));
+                        } else {
+                            inputValue.setText(inputValue.getText().subSequence(0, length - 1));
+                        }
+                    } catch (StringIndexOutOfBoundsException e) {
+                        Log.e(TAG, e.getMessage());
+                        inputValue.setText("");
+                    } catch (IndexOutOfBoundsException e) {
+                        Log.d(TAG, e.getMessage());
                         inputValue.setText("");
                     }
                 }
@@ -312,11 +304,6 @@ public class AdvancedCalculator extends AppCompatActivity {
             for (j = 0; j < size; ++j) {
                 if (result.get(j) == result.get(i))
                     ++count;
-            }
-
-            if (count > maxCount) {
-                maxCount = count;
-                maxValue = result.get(i);
             }
         }
         return maxValue;
