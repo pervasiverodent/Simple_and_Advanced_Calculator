@@ -1,4 +1,4 @@
-# Simple_and_Advanced_Calculator
+# Simple and Advanced Calculator
 For CSE11
 
 This project is on-going.
